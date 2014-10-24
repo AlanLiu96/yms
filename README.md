@@ -1,7 +1,5 @@
-yms
-===
-
 Your Meal Swipe
+===
 
 A meteor application for Yale students to plan out their $8.00 of meal swipe credit
 
