@@ -3,6 +3,8 @@ Your Meal Swipe
 
 A meteor application for Yale students to plan out their $8.00 of meal swipe credit
 
+Located at <a href='yms.alanliu.me'>yms.alanliu.me</a> or at <a href='yms.meteor.com'>yms.meteor.com</a>
+
 <h3>Local run:</h3>
 
 <ol>
