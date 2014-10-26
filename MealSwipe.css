@@ -11,6 +11,7 @@ box-shadow: none;
 
 position: relative;
 padding: 10px 15px 15px;
+padding-bottom: 150px;
 margin: 0 -15px 15px;
 border-color: #e5e5e5 #eee #eee;
 border-style: solid;
@@ -32,9 +33,10 @@ content: "Example";*/
 h1{
  }
 site { padding-top: 70px; }
+
+
 /*
 .th{
-
 
 
 
