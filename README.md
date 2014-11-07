@@ -15,14 +15,11 @@ Located at <a href='http://www.yms.alanliu.me'>yms.alanliu.me</a> or at <a href=
 
 <h3>Bugs:</h3>
 
-Sometimes the Items are printed twice-not quite sure why
-
+Yay! Bug Free!
 
 <h3>To Do:</h3>
 
 <ul>
-
-<li>Fix bugs</li>
 
 <li>Add in Hours for Durfees</li>
 

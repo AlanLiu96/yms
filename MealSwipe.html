@@ -55,10 +55,15 @@
 
 <template name="item">
   <!-- <div class="items"> -->
-    <tr><td>{{name}}</td>
+<!--     {{#if purchased}} -->
+	<tr class = '{{purchased}} basic'>
+<!-- 	{{else}}
+	<tr>
+	{{/if}}
+ -->    <td>{{name}}</td>
     <td>{{price}}</td>
     <td>{{quant}}</td>
-    <td><button type = 'button' class= 'btn btn-default btn-sm inc' id={{id}} >+</button><button type = 'button' class= 'btn btn-default btn-sm dec' id={{id}} >-</button></td>
+    <td><button type = 'button' class= 'btn btn-default btn-sm inc' id={{id}} >+</button><button type = 'button' class= 'btn btn-default btn-sm dec' id={{id}}>-</button></td>
 <!--'' <td>{{id}}</td> --><!-- temp hardcoding xid to 1 -->
     <!-- <td>BUTTONS HERE</td> -->
     </tr>

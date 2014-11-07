@@ -6,30 +6,40 @@
 var tableitems="";  // gets all the items in the table and then outputs them
 
 Items = new Meteor.Collection("items"); 
+// Items.remove({});
 // Prices = new Meteor.Collection("prices");
 // Qunatities = new Meteor.Collection("quant"); 
 
 
 
+
+
 if (Meteor.isClient) {
+Session.setDefault('listLength',0)
+Meteor.call('removeAllItems');
 
 var mealswipeapi = "https://spreadsheets.google.com/feeds/list/18ocdFFouu4iPCGUiMHOPaodcFqshuzMyAc7SBwPYoj8/od6/public/values?alt=json";
 var datasheet = jQuery.getJSON(mealswipeapi, function(json){
       console.log("It's working!");
 
-
+// if (Items.find().fetch() == []){
       for (var i = 0; i <= json.feed.entry.length - 1; i++) {
         // itemList.push(json.feed.entry[i].gsx$item.$t);//adds elements in item column to itemList
         // priceList.push(json.feed.entry[i].gsx$price.$t);//adds elements in price column to priceList
         // itemQuant.push(0);
         if (Items.findOne({name:json.feed.entry[i].gsx$item.$t}) == null)//preventing duplicates
+          // Items.update({id: (i+1).toString()} ,
+          //  {$set: {name: json.feed.entry[i].gsx$item.$t}}); 
+          // Items.upsert({id: (i+1).toString()} , {$set: {name: json.feed.entry[i].gsx$item.$t}, $set: {price: json.feed.entry[i].gsx$price.$t}, $set: {floatPrice: parseFloat(json.feed.entry[i].gsx$price.$t.substring(1,json.feed.entry[i].gsx$price.$t.length))} ,$set: {quant: 0 }});
           Items.insert({id: (i+1).toString() , name: json.feed.entry[i].gsx$item.$t, price: json.feed.entry[i].gsx$price.$t, floatPrice: parseFloat(json.feed.entry[i].gsx$price.$t.substring(1,json.feed.entry[i].gsx$price.$t.length)) ,quant: 0 });
-
+          if ((i+1) > Session.get('listLength')){
+          Session.set('listLength', (i+1) )// get length
+        }
       };
       // console.log(itemList);
       // console.log(priceList);
       // Session.set("listLength", itemList.length);
-      // i might want to do session/set instead of 2 global variables in the future.
+     // } // i might want to do session/set instead of 2 global variables in the future.
     });
 
 var responded =datasheet.done(function() {
@@ -38,6 +48,12 @@ var responded =datasheet.done(function() {
     //OLD Method of Printing out the table, doesn't use much meteor code
 // Session.set("listLength", itemList.length);
 
+for (var i = 0; i < Session.get('listLength'); i++) {
+  for (var j = 1; j < Items.find({id: i.toString()}).fetch().length; j++) {
+   Items.remove({_id:Items.find({id: i.toString()}).fetch()[j]._id});
+  };
+
+};
 //collection printing code 
 // var count=1;
 // var sortedItems = Items.find({});
@@ -62,12 +78,25 @@ var responded =datasheet.done(function() {
 
   });
 
-//json parsing section end
 
+
+
+//json parsing section end
 
   Template.table.items = function () {
     return Items.find({});
   };
+
+Template.item.purchased = function(){
+
+  Items.find({}).forEach(function(item) {
+    // console.log(item);
+    if (item.quant > 0)
+     return 'info'
+    else
+     return ''
+});
+};//WIP right now it's supposed to change colors when quant goes up, but it doesn't
 
   Template.table.selected_name = function () {
     var item = Items.findOne(Session.get("selected_item"));
@@ -173,10 +202,20 @@ Template.total.active = function(){
 
 if (Meteor.isServer) {
 
+
   Meteor.startup(function () {
     Items.remove({});//removes old items left behind in cache
 
     // code to run on server at startup
+  });
+
+  Meteor.methods({
+
+      removeAllItems: function() {
+
+        return Items.remove({});
+
+      }
   });
 }
 
